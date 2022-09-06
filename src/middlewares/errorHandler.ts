@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 
-export default function errorHandlingMiddleware(error:any, req:Request, res:Response, next:NextFunction) {
-	
+import { IError } from "../interfaces/utilsInterfaces.js";
+
+export default function errorHandlingMiddleware(error: IError | Error, req: Request, res: Response, next: NextFunction) {
+	if(error.name === "Already used"){
+		return res.status(400).send(error.message);
+	}
 	return res.sendStatus(500);
 }
 
