@@ -18,9 +18,9 @@ export async function registerNewCard(userId: number, cardData: TypeCardsData) {
 }
 
 export async function getAllCards(userId: number) {
-    const UserCards = await cardsRepository.getAllUserCards(userId);
-    decryptInfo(UserCards);
-    return UserCards;
+    const userCards = await cardsRepository.getAllUserCards(userId);
+    decryptInfo(userCards);
+    return userCards;
 }
 
 export async function getSingleCard(userId: number, cardId: number) {

@@ -17,9 +17,9 @@ export async function registerCredential(userId: number, credentialData: TypeCre
 }
 
 export async function getAllCredentials(userId: number) {
-    const UserCredentials = await credentialRepository.getAllUserCredentials(userId);
-    decryptInfo(UserCredentials);
-    return UserCredentials;
+    const userCredentials = await credentialRepository.getAllUserCredentials(userId);
+    decryptInfo(userCredentials);
+    return userCredentials;
 }
 
 export async function getSingleCredential(userId: number, credentialId: number) {
