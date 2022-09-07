@@ -49,9 +49,9 @@ async function verifySingleSafeNote(userId:number, safeNoteId: number){
     return singleSafeNote;
 }
 
-function decryptInfo(credentials: safeNotes[]){
+function decryptInfo(safeNotes: safeNotes[]){
     const cryptr = new Cryptr(process.env.CRYPTR_KEY);
-    credentials.forEach(credential => {
-        credential.content = cryptr.decrypt(credential.content);
+    safeNotes.forEach(safeNote => {
+        safeNote.content = cryptr.decrypt(safeNote.content);
     });
 }
