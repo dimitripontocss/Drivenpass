@@ -23,13 +23,7 @@ export async function getAllCredentials(userId: number) {
 }
 
 export async function getSingleCredential(userId: number, credentialId: number) {
-    const singleCredential = await credentialRepository.getSingleCredentialById(credentialId);
-    if(!singleCredential){
-        throw {name: "Unexistent", message: "This Credential dont exist." }
-    }
-    if(singleCredential.userId !== userId){
-        throw {name: "Not_Authorized", message: "Not authorized." }
-    }
+    const singleCredential = await verifySingleCredential(userId,credentialId);
 
     const cryptr = new Cryptr(process.env.CRYPTR_KEY);
     const decryptedPassword = cryptr.decrypt(singleCredential.password);
@@ -38,6 +32,11 @@ export async function getSingleCredential(userId: number, credentialId: number) 
 }
 
 export async function deleteCredential(userId: number, credentialId: number) {
+    await verifySingleCredential(userId,credentialId);
+    await credentialRepository.deleteCredentialById(credentialId);
+}
+
+async function verifySingleCredential(userId:number, credentialId: number){
     const singleCredential = await credentialRepository.getSingleCredentialById(credentialId);
     if(!singleCredential){
         throw {name: "Unexistent", message: "This Credential dont exist." }
@@ -45,10 +44,9 @@ export async function deleteCredential(userId: number, credentialId: number) {
     if(singleCredential.userId !== userId){
         throw {name: "Not_Authorized", message: "Not authorized." }
     }
-    await credentialRepository.deleteCredentialById(credentialId);
+
+    return singleCredential;
 }
-
-
 
 function decryptInfo(credentials: safeCredentials[]){
     const cryptr = new Cryptr(process.env.CRYPTR_KEY);
