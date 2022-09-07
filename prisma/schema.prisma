@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model safeNotes {
+  id      Int    @id @default(autoincrement())
+  userId  Int?
+  title   String @db.VarChar(50)
+  content String @db.VarChar(1000)
+  users   users? @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, title])
+}
+
+model credentials {
+  id       Int    @id @default(autoincrement())
+  userId   Int?
+  title    String @db.VarChar(50)
+  url      String 
+  username String
+  password String
+  users   users? @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, title])
+}
+
+model wifis {
+  id       Int    @id @default(autoincrement())
+  userId   Int?
+  title    String @db.VarChar(50) 
+  wifiName String
+  password String
+  users   users? @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model cards {
+  id             Int    @id @default(autoincrement())
+  userId         Int?
+  title          String @db.VarChar(50)
+  number         String
+  owner          String
+  securityCode   String
+  expirationDate String
+  password       String
+  isVirtual      Boolean
+  type           Type 
+  users   users? @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([userId, title])
+}
+
+model users {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
+  password  String      @unique
+  safeNotes safeNotes[]
+  credentials credentials[]
+  cards cards[]
+  wifis wifis[]
+}
+
+enum Type {
+  CREDIT
+  DEBIT
+  BOTH
+}

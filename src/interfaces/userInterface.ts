@@ -1,4 +1,3 @@
-export interface IUserData {
-    email: string;
-    password: string;
-}
+import { users } from '@prisma/client'
+
+export type TypeUserData = Omit<users,'id'>

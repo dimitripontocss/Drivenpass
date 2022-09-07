@@ -1,21 +1,35 @@
-import { IUserData } from "../interfaces/userInterface.js";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
-export async function signUpService(newUserData: IUserData) {
-    console.log(newUserData);
-    // const alreadyExist = await PRISMA
-    // if(alreadyExist.rowCount !== 0){
-    //     throw {name: "Already used", message: "Cannot use this email try again with a new one." }
-    // }
+import { TypeUserData } from "../interfaces/userInterface.js";
+import * as authRepository from "../repositories/authRepository.js";
+import jwtGenerator from "../utils/jwtGenerator.js";
+
+
+export async function signUpService(newUserData: TypeUserData) {    
+    const alreadyExist = await authRepository.findSingleUser(newUserData.email);
+    if(alreadyExist){
+        throw {name: "Already used", message: "Cannot use this email try again with a new one." }
+    }
 
     const cryptedPassword = bcrypt.hashSync(newUserData.password, 10); 
+
+    await authRepository.insertUser({email: newUserData.email, password: cryptedPassword});
+    
+    return;
 }
 
-export async function signInService(userData: IUserData) {
-    console.log(userData);
-    // const alreadyExist = await PRISMA
-    // if(alreadyExist.rowCount !== 0){
-    //     throw {name: "Already used", message: "Cannot use this email try again with a new one." }
-    // }
+export async function signInService(userData: TypeUserData) {
+    const possibleUser = await authRepository.findSingleUser(userData.email);
+    if(!possibleUser){
+        throw {name: "Login_Error", message: "An error ocurred, change your info and try again."};
+    }
  
+    const isPasswordCorrect = bcrypt.compareSync(userData.password, possibleUser.password);
+    if(!isPasswordCorrect){
+        throw {name: "Login_Error", message: "An error ocurred, change your info and try again."};
+    }
+
+    const token = jwtGenerator({id: possibleUser.id, email: possibleUser.email});
+
+    return token;
 }
