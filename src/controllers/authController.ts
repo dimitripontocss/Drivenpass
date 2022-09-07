@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { TypeUserData } from "../interfaces/userInterface.js";
+import { TypeUserData } from "../interfaces/interfaces.js";
 import * as authServices from "../services/authServices.js";
 
 export async function signup(req:Request, res:Response){

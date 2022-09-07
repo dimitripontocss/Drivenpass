@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-import { TypeUserData } from "../interfaces/userInterface.js";
+import { TypeUserData } from "../interfaces/interfaces.js";
 import * as authRepository from "../repositories/authRepository.js";
 import jwtGenerator from "../utils/jwtGenerator.js";
 

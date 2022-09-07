@@ -17,7 +17,7 @@ model safeNotes {
   @@unique([userId, title])
 }
 
-model credentials {
+model safeCredentials {
   id       Int    @id @default(autoincrement())
   userId   Int?
   title    String @db.VarChar(50)
@@ -59,7 +59,7 @@ model users {
   email     String      @unique
   password  String      @unique
   safeNotes safeNotes[]
-  credentials credentials[]
+  credentials safeCredentials[]
   cards cards[]
   wifis wifis[]
 }
