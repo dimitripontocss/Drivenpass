@@ -1,130 +1,212 @@
-# Documentation DrivenPass
+# <p align = "center"> DrivenPass </p>
 
-## Routes:
+<p align="center">
+   <img style="width:300px" src="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/1f512.svg"/>
+</p>
 
-### Authorization Router:
+<p align = "center">
+   <img src="https://img.shields.io/badge/author-dimitripontocss-4dae71?style=flat-square" />
+   <img src="https://img.shields.io/github/languages/count/dimitripontocss/projeto19-drivenpass?color=4dae71&style=flat-square" />
+</p>
 
-#### -> POST /sign-up: 
-    Header: NONE
-    Body:   {
-                "email": "******@*.com",
-                "password": "**********" min=10
+## :clipboard: Description
+
+This is a Api made for users who are looking to keep their sensitive info safe and with easy access. If you have registered on a site and usualy don't remember your password on the first try this application is made for you, with the need of remembering only one password you have access to everything you need.
+
+---
+
+## :computer: Tecnologies used
+
+- REST APIs
+- JWTs
+- Node.js
+- TypeScript
+- Prisma (ORM)
+- Postgres
+
+---
+
+## :rocket: Routes
+
+```yml
+POST /sign-up
+    - Route used to register new users
+    - headers: {}
+    - body:{
+        "email": "lorem@gmail.com",
+        "password": "loremipsum"
+}
+```
+
+```yml
+POST /sign-in
+    - SignIn route, you receive a Token if data is correct
+    - headers: {}
+    - body: {
+    "email": "lorem@gmail.com",
+    "password": "loremipsum"
+    }
+```
+
+```yml
+POST /credential (authenticated)
+    - Post a new credential
+    - headers: { "Authorization": "Bearer $token" }
+    - body:   {
+                "title": "loremipsum",
+                "url": "https://loremipsum.com",
+                "username": "loremipsum",
+                "password": "loremipsum"
             }
-    Return: NONE
+```
 
-#### -> POST /sign-in: 
-    Header: NONE
-    Body:   {
-                "email": "******@*.com",
-                "password": "**********" min=10
+```yml
+GET /credentials (authenticated)
+    - Get all user credentials
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
+
+```yml
+GET /credential/(idCredential) (authenticated)
+    - Get single user credential
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
+
+```yml
+DELETE /credential/(idCredential) (authenticated)
+    - Delete a single user credential
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
+
+```yml
+POST /safeNote (authenticated)
+    - Post a new safeNote
+    - headers: { "Authorization": "Bearer $token" }
+    - body:   {
+                "title": "loremipsum", max=50
+                "content": "loremipsum" max=1000
             }
-    Return: Token
+```
 
-### Credentials Router:
+```yml
+GET /safeNotes (authenticated)
+    - Get all user safeNotes
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-#### -> POST /credential: 
-    Header: Bearer (Token)
-    Body:   {
-                "title": "teste",
-                "url": "https://*****", Link válido
-                "username": "****",
-                "password": "****"
-            }
-    Return: NONE
+```yml
+GET /safeNote/(idSafeNote) (authenticated)
+    - Get single user safeNote
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-#### -> GET /credentials: 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: credentials[]
+```yml
+DELETE /safeNote/(idSafeNote) (authenticated)
+    - Delete a single user safeNote
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-#### -> GET /credential/(idCredential): 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: Credential
-
-#### -> DELETE /credential/(idCredential): 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: NONE
-
-### SafeNotes Router:
-
-#### -> POST /safeNote: 
-    Header: Bearer (Token)
-    Body:   {
-                "title": "*****", max=50
-                "content": "*****" max=1000
-            }
-    Return: NONE
-
-#### -> GET /safeNotes: 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: safeNotes[]
-
-#### -> GET /safeNote/(idSafeNote): 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: SafeNote
-
-#### -> DELETE /safeNote/(idSafeNote): 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: NONE
-
-### Cards Router:
-
-#### -> POST /card: 
-    Header: Bearer (Token)
-    Body:   {
-                "title": "*****",
+```yml
+POST /card (authenticated)
+    - Post a new card
+    - headers: { "Authorization": "Bearer $token" }
+    - body:   {
+                "title": "loremipsum",
                 "number": "*****",
-                "owner": "*****",
+                "owner": "loremipsum",
                 "securityCode": "***", length=3
                 "expirationDate": "*****",length=5
                 "password": "****",length=4
                 "isVirtual": false || true,
                 "type": DEBIT || CREDIT || BOTH
             }
-    Return: NONE
+```
 
-#### -> GET /cards: 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: Cards[]
+```yml
+GET /cards (authenticated)
+    - Get all user cards
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-#### -> GET /card/(idCard): 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: Card
+```yml
+GET /card/(idCard) (authenticated)
+    - Get single user card
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-#### -> DELETE /card/(idCard): 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: NONE
+```yml
+DELETE /card/(idCard) (authenticated)
+    - Delete a single user card
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-### Cards Router:
-
-#### -> POST /wifi: 
-    Header: Bearer (Token)
-    Body:   {
-                "title": "****",
-                "wifiName": "****",
-                "password": "****"
+```yml
+POST /wifi (authenticated)
+    - Post new wifi information
+    - headers: { "Authorization": "Bearer $token" }
+    - body:   {
+                "title": "loremipsum",
+                "wifiName": "loremipsum",
+                "password": "loremipsum"
             }
-    Return: NONE
+```
 
-#### -> GET /wifis: 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: Wifi[]
+```yml
+GET /wifis (authenticated)
+    - Get all user wifis infos
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-#### -> GET /wifi/(idWifi): 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: Wifi
+```yml
+GET /wifi/(idWifi) (authenticated)
+    - Get single user wifi info
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
 
-#### -> DELETE /wifi/(idWifi): 
-    Header: Bearer (Token)
-    Body:   NONE
-    Return: NONE
+```yml
+DELETE /wifi/(idWifi) (authenticated)
+    - Delete a single user wifi info
+    - headers: { "Authorization": "Bearer $token" }
+    - body: {}
+```
+
+---
+
+## 🏁 Running the application
+
+This project was made with Node.Js, so in order to run it at your machine you gotta have a stable version of Node.Js and NPM installed.
+
+First, clone this directory:
+
+```
+git clone https://github.com/dimitripontocss/projeto19-drivenpass
+```
+
+After, inside the directory, run this command to install the dependencies:
+
+```
+npm install
+```
+
+After its done run this command to build the aplication:
+
+```
+npm build
+```
+
+And then this command to run the server:
+
+```
+npm start
+```
